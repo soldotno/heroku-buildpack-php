@@ -24,12 +24,12 @@ node_version=$(curl --silent $semver_url)
 
 # Recommend using semver ranges in a safe manner
 if [ "$semver_range" == "null" ]; then
-  #protip "Specify a node version in package.json"
+  echo "Specify a node version in package.json"
   semver_range=""
 elif [ "$semver_range" == "*" ]; then
-  #protip "Avoid using semver ranges like '*' in engines.node"
+  echo "Avoid using semver ranges like '*' in engines.node"
 elif [ ${semver_range:0:1} == ">" ]; then
-  #protip "Avoid using semver ranges starting with '>' in engines.node"
+  echo "Avoid using semver ranges starting with '>' in engines.node"
 fi
 
 # Output info about requested range and resolved node version
@@ -62,7 +62,7 @@ if test -f $build_dir/npm-shrinkwrap.json; then
   test -d $cache_dir && status "npm-shrinkwrap.json unchanged since last build"
 else
   # Fall back to package.json as the cachebuster.
-  #protip "Use npm shrinkwrap to lock down dependency versions"
+  echo "Use npm shrinkwrap to lock down dependency versions"
   package_json_checksum=$(cat $build_dir/package.json | md5sum | awk '{print $1}')
   cache_dir="$cache_basedir/$package_json_checksum"
   test -d $cache_dir && status "package.json unchanged since last build"
