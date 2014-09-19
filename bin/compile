@@ -57,6 +57,7 @@ set -eu
 # move hidden files too, just in case
 shopt -s dotglob
 
+S3_BUCKET=chh-heroku-buildpack-php
 export PATH="$HOME/bin:$PATH"
 curl "http://${S3_BUCKET}.s3.amazonaws.com/jq/jq" -L -s -o - > "$HOME/bin/jq"
 chmod +x "$HOME/bin/jq"
