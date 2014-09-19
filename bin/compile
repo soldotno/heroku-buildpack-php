@@ -57,6 +57,11 @@ set -eu
 # move hidden files too, just in case
 shopt -s dotglob
 
+export PATH="$HOME/bin:$PATH"
+curl "http://${S3_BUCKET}.s3.amazonaws.com/jq/jq" -L -s -o - > "$HOME/bin/jq"
+chmod +x "$HOME/bin/jq"
+
+
 STACK=${STACK:-cedar} # Anvil has none
 BUILD_DIR=$1
 CACHE_DIR=$2/php
