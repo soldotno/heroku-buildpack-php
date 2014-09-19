@@ -2,6 +2,28 @@
 
 # bin/compile <build-dir> <cache-dir> <env-dir>
 
+function install_node_deps() {
+   local cwd=$(pwd)
+   local target="$1"
+
+   if [ ! -f "$target/package.json" ]; then
+       return 0
+   fi
+
+   status "NODE (package.json) app detected"
+
+   source ${basedir}/compile_node $BUILD_DIR $CACHE_DIR
+
+   local node_path='vendor/node'
+
+   # Symlink node to /app/vendor/node so node and its modules are runnable.
+
+   ln -s ${BUILD_DIR}/${node_path}/ /app/${node_path}
+   ln -s ${BUILD_DIR}/node_modules /app/node_modules
+
+   echo "Node " `node -v` | indent
+}
+
 install_ext () {
     local ext=$1
     local reason=${2:-}
@@ -277,6 +299,9 @@ http://devcenter.heroku.com/articles/php-support#custom-github-oauth-tokens"
 fi
 # no need for the token to stay around in the env
 unset COMPOSER_GITHUB_OAUTH_TOKEN
+
+install_node_deps "$BUILD_DIR"
+
 
 # install dependencies
 composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction | indent
